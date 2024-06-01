@@ -48,22 +48,30 @@ function TaskCard({ task, deleteTask, updateTask, moveTask }: Props) {
 
   if (editMode) {
     return (
+      <>
+     
       <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset  cursor-grab relative">
-        <textarea className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none " value={task.content} autoFocus placeholder="Task content here" onBlur={toggleEditMode} onKeyDown={(e) => {
+     
+        <textarea className="h-[90%] w-full resize-none border-none rounded bg-transparent text-white focus:outline-none "  value={task.content}  placeholder="Task content here" onKeyDown={(e) => {
           if (e.key === "Enter" && e.shiftKey) {
             toggleEditMode();
           }
         }} onChange={(e) => updateTask(task.id, e.target.value)} />
+      
       </div>
+      </>
     );
   }
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners} onClick={toggleEditMode} className="bg-mainBackgroundColor p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-inset  cursor-grab relative task" onMouseEnter={() => { setMouseIsOver(true); }} onMouseLeave={() => { setMouseIsOver(false); }}>
-    <p className="">{task.title}</p>
+    <div className="flex flex-col">
+    
       <p className="my-auto h-[90%] w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap">
         {task.content}
+
       </p>
+      </div>
       {task.columnId === "done" && task.timestamp && (
         <p className="text-xs text-gray-400 bg-columnBackgroundColor rounded-4 p-2 mr-2">Completed at: {task.timestamp}</p>
       )}

@@ -2,9 +2,8 @@ import PlusIcon from "../icons/PlusIcon";
 import { useMemo, useState } from "react";
 import { Column, Id, Task } from "../types";
 import ColumnContainer from "./ColumnContainer";
-import {
-  DndContext,
-  DragEndEvent,
+import { DndContext,
+ DragEndEvent,
   DragOverEvent,
   DragOverlay,
   DragStartEvent,
@@ -35,33 +34,45 @@ const defaultTasks: Task[] = [
   {
     id: "1",
     columnId: "todo",
-    content: "task 1",
+   
+    content: "heading 1",
+  
   },
   {
     id: "2",
     columnId: "doing",
+  
     content:
-      "task 2 ",
+      "heading 2 ",
+    
   },
   {
     id: "3",
     columnId: "doing",
-    content: "task 3",
+    
+    content: "heading 3",
+   
   },
   {
     id: "4",
     columnId: "doing",
+    
     content: "Analyze competitors",
+  
   },
   {
     id: "5",
     columnId: "done",
-    content: "task 7",
+   
+    content: "heading 7",
+   
   },
   {
     id: "6",
     columnId: "done",
-    content: "task 8",
+   
+    content: "this is title"
+   
   },
 
  
@@ -86,7 +97,7 @@ function KanbanBoard() {
   );
 
   return (
-    <div className="  m-auto  flex  min-h-screen  w-full  items-center  overflow-x-auto  overflow-y-hidden  px-[40px]" >
+    <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-[40px]">
       <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd} onDragOver={onDragOver}>
         <div className="m-auto flex gap-4">
           <div className="flex gap-4">
@@ -107,10 +118,8 @@ function KanbanBoard() {
             </SortableContext>
           </div>
           <button
-            onClick={() => {
-              createNewColumn();
-            }}
-            className=" h-[60px] w-[350px] min-w-[350px] cursor-pointer rounded-lg bg-mainBackgroundColor border-2  border-columnBackgroundColor  p-4  ring-rose-500  hover:ring-2  flex  gap-2  "
+            onClick={createNewColumn}
+            className="h-[60px] w-[350px] min-w-[350px] cursor-pointer rounded-lg bg-mainBackgroundColor border-2 border-columnBackgroundColor p-4 ring-rose-500 hover:ring-2 flex gap-2"
           >
             <PlusIcon />
             Add Column
@@ -128,9 +137,7 @@ function KanbanBoard() {
                 deleteTask={deleteTask}
                 updateTask={updateTask}
                 moveTask={moveTask}
-                tasks={tasks.filter(
-                  (task) => task.columnId === activeColumn.id
-                )}
+                tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
               />
             )}
             {activeTask && (
@@ -153,6 +160,7 @@ function KanbanBoard() {
       id: generateId(),
       columnId,
       content: `Task ${tasks.length + 1}`,
+    
     };
 
     setTasks([...tasks, newTask]);
@@ -166,7 +174,7 @@ function KanbanBoard() {
   function updateTask(id: Id, content: string) {
     const newTasks = tasks.map((task) => {
       if (task.id !== id) return task;
-      return { ...task, content };
+      return { ...task,content };
     });
 
     setTasks(newTasks);
@@ -189,10 +197,10 @@ function KanbanBoard() {
     setTasks(newTasks);
   }
 
-  function updateColumn(id: Id, title: string) {
+  function updateColumn(id: Id, title: string,) {
     const newColumns = columns.map((col) => {
       if (col.id !== id) return col;
-      return { ...col, title };
+      return { ...col, title,  };
     });
 
     setColumns(newColumns);
@@ -202,10 +210,9 @@ function KanbanBoard() {
     const newTasks = tasks.map((task) => {
       if (task.id !== taskId) return task;
       const timestamp = newColumnId === "done"
-      ? new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })
-      : undefined;
-    return { ...task, columnId: newColumnId, timestamp };
-     
+        ? new Date().toLocaleString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })
+        : undefined;
+      return { ...task, columnId: newColumnId, timestamp };
     });
 
     setTasks(newTasks);
@@ -238,11 +245,8 @@ function KanbanBoard() {
     const isActiveAColumn = active.data.current?.type === "Column";
     if (!isActiveAColumn) return;
 
-    console.log("DRAG END");
-
     setColumns((columns) => {
       const activeColumnIndex = columns.findIndex((col) => col.id === activeId);
-
       const overColumnIndex = columns.findIndex((col) => col.id === overId);
 
       return arrayMove(columns, activeColumnIndex, overColumnIndex);
@@ -263,14 +267,12 @@ function KanbanBoard() {
 
     if (!isActiveATask) return;
 
-    // Im dropping a Task over another Task
     if (isActiveATask && isOverATask) {
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
         const overIndex = tasks.findIndex((t) => t.id === overId);
 
-        if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
-          // Fix introduced after video recording
+        if (tasks[activeIndex].columnId !== tasks[overIndex].columnId) {
           tasks[activeIndex].columnId = tasks[overIndex].columnId;
           return arrayMove(tasks, activeIndex, overIndex - 1);
         }
@@ -281,24 +283,18 @@ function KanbanBoard() {
 
     const isOverAColumn = over.data.current?.type === "Column";
 
-    // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex((t) => t.id === activeId);
 
         tasks[activeIndex].columnId = overId;
-        console.log("DROPPING TASK OVER COLUMN", { activeIndex });
         return arrayMove(tasks, activeIndex, activeIndex);
       });
     }
   }
 }
 
-
-
-
 function generateId() {
-  /* Generate a random number between 0 and 10000 */
   return Math.floor(Math.random() * 10001);
 }
 
