@@ -1,11 +1,11 @@
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
-import Home from './pages/Home';
-import Kanban from './components/KanbanBoard';  // Assume these components are defined elsewhere
+
+import Kanban from './components/KanbanBoard'; 
 import Invoice from './components/ManageInvoice';
 
-import './App.css';  // Import your CSS
+import './App.css';
 
 const App = () => (
   <Router>

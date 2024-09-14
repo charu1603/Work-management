@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
-import { HomeIcon, UsersIcon, FolderIcon, CalendarIcon, InboxIcon, ChartBarIcon } from '@heroicons/react/24/outline'; // Adjust imports as needed
+import { UsersIcon, CalendarIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
  
